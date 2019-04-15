@@ -12,7 +12,7 @@ class KMeans:
         for i in range(num_classes):
             self.clusters.append([])
 
-        self.colors = ['red', 'yellow', 'blue']
+        self.colors = ['red', 'yellow', 'blue', 'green', 'white']
         self.gui = gui
         self.canvas = Canvas(self.gui, width=800, height=600, bg='white')
 
@@ -23,6 +23,18 @@ class KMeans:
                 if not points[point_index] in self.cluster_centers:
                     self.cluster_centers.append(points[point_index])
                     break
+
+    def compute_cluster_center(self, cluster_index):
+        x = 0
+        y = 0
+        cluster_length = len(self.clusters[cluster_index])
+        for point in self.clusters[cluster_index]:
+            x = x + point.x
+            y = y + point.y
+        x = x / cluster_length
+        y = y / cluster_length
+        self.cluster_centers[cluster_index].x = x
+        self.cluster_centers[cluster_index].y = y
 
     def compute_euc_distance(self, point, cluster_center):
         distance = math.sqrt(pow(point.x - cluster_center.x, 2) + pow(point.y - cluster_center.y, 2))
@@ -44,6 +56,7 @@ class KMeans:
         for point in points:
             cluster_index = self.classify_a_point(point)
             self.clusters[cluster_index].append(point)
+            self.compute_cluster_center(cluster_index)
 
     def draw_clusters(self):
         color = 0
