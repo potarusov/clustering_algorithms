@@ -117,13 +117,3 @@ mean_shift.draw_clusters()
 mean_shift.draw_centroids(mean_shift.cluster_centroids)
 
 window.mainloop()
-
-
-
-
-
-
-
-
-
-
