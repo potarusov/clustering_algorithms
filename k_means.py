@@ -1,7 +1,8 @@
+
 import random
 import math
 from tkinter import Tk, Canvas
-from data_generator import Point2D
+from data_generator import Point2D, BoundingBox, DataGenerator
 
 class KMeans:
     def __init__(self, num_classes, world, gui):
@@ -66,3 +67,21 @@ class KMeans:
             color = color + 1
 
         self.canvas.pack()
+
+bb1 = BoundingBox(10, 100, 10, 100)
+bb2 = BoundingBox(200, 300, 10, 100)
+bb3 = BoundingBox(220, 280, 200, 300)
+bounding_boxes = [bb1, bb2, bb3]
+
+world = BoundingBox(10, 10, 220, 300)
+
+window = Tk()
+data_generator = DataGenerator(bounding_boxes, 30, window)
+points = data_generator.generate_points()
+#data_generator.draw_clusters()
+
+k_means = KMeans(5, world, window)
+k_means.run(points)
+k_means.draw_clusters()
+
+window.mainloop()
