@@ -1,5 +1,5 @@
 import math
-from tkinter import *
+from tkinter import Tk, Canvas
 import numpy as np
 from data_generator import Point2D, BoundingBox, DataGenerator
 
