@@ -22,7 +22,7 @@ for i in range(len(points)):
     cluster.compute_centroid()
     clusters.append(cluster)
 
-ahc = AHC(clusters)
+ahc = AHC(points, clusters)
 ahc.run(100)
 ahc.draw_clusters(canvas)
 

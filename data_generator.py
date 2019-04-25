@@ -2,9 +2,10 @@ import random
 from tkinter import Tk, Canvas
 
 class Point2D:
-    def __init__(self, x, y):
+    def __init__(self, id, x, y):
         self.x = x
         self.y = y
+        self.id = id
 
 class BoundingBox:
     def __init__(self, x_min, x_max, y_min, y_max):
@@ -22,16 +23,18 @@ class DataGenerator:
         self.gui = gui
         self.canvas = Canvas(self.gui, width=800, height=600, bg='white')
 
-    def generate_point_2d(self, bb):
+    def generate_point_2d(self, bb, point_id):
         x = random.randint(bb.x_min, bb.x_max)
         y = random.randint(bb.y_min, bb.y_max)
-        return Point2D(x, y)
+        return Point2D(point_id, x, y)
 
     def generate_points(self):
+        point_id = 0
         for bb in self.bounding_boxes:
             cluster = []
             for i in range(self.num_points_per_bb):
-                point_2d = self.generate_point_2d(bb)
+                point_2d = self.generate_point_2d(bb, point_id)
+                point_id += 1
                 cluster.append(point_2d)
                 self.points.append(point_2d)
             self.clusters.append(cluster)

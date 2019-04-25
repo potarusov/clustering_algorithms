@@ -20,7 +20,7 @@ class MeanShift:
         for point in points:
             X += point.x
             Y += point.y
-        return Point2D(X / len(points), Y / len(points))
+        return Point2D(-1, X / len(points), Y / len(points))
 
     def find_neighbouring_points(self, x_centroid, points):
         neighbouring_points = []
@@ -104,7 +104,7 @@ bb4 = BoundingBox(600, 700, 600, 700)
 bounding_boxes = [bb1, bb2, bb3, bb4]
 
 window = Tk()
-num_points_per_bb = 30
+num_points_per_bb = 100
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
 points = data_generator.generate_points()
 
