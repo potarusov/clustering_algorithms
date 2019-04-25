@@ -97,10 +97,11 @@ class MeanShift:
             print('X = ', centroid.x, ', ', 'Y = ', centroid.y)
 
 # Test the algorithm
-bb1 = BoundingBox(10, 100, 10, 300)
-bb2 = BoundingBox(200, 300, 10, 100)
-bb3 = BoundingBox(220, 280, 200, 300)
-bounding_boxes = [bb1, bb2, bb3]
+bb1 = BoundingBox(100, 200, 100, 500)
+bb2 = BoundingBox(300, 400, 300, 400)
+bb3 = BoundingBox(600, 700, 100, 300)
+bb4 = BoundingBox(600, 700, 600, 700)
+bounding_boxes = [bb1, bb2, bb3, bb4]
 
 window = Tk()
 num_points_per_bb = 30
@@ -108,7 +109,7 @@ data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
 points = data_generator.generate_points()
 
 canvas = Canvas(window, width=800, height=600, bg='white')
-search_radius = 100
+search_radius = 150
 mean_shift = MeanShift(search_radius, canvas)
 max_num_iterations = 10
 mean_shift.run(max_num_iterations, points)

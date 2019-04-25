@@ -34,10 +34,22 @@ class AHC:
 
         self.colors = ['white', 'yellow', 'cyan', 'green', 'blue', 'brown', 'cyan']
 
-    def compute_euc_distance(self, first_cluster, second_cluster):
-        distance = math.sqrt(pow(first_cluster.centroid.x - second_cluster.centroid.x, 2)
-                             + pow(first_cluster.centroid.y - second_cluster.centroid.y, 2))
+    def compute_euc_distance(self, point_a, point_b):
+        distance = math.sqrt(pow(point_a.x - point_b.x, 2)
+                             + pow(point_a.y - point_b.y, 2))
         return distance
+
+    # The distance between two clusters is determined by a single element pair,
+    # namely those two elements (one in each cluster) that are closest to each other.
+    # It tends to produce long thin clusters..
+    def compute_simple_linkage_distance(self, first_cluster, second_cluster):
+        min_value = 1000000
+        for i in range(len(first_cluster.points)):
+            for j in range(len(second_cluster.points)):
+                simple_linkage_distance = self.compute_euc_distance(first_cluster.points[i], second_cluster.points[j])
+                if simple_linkage_distance < min_value:
+                    min_value = simple_linkage_distance
+        return min_value
 
     def compute_distance_matrix(self):
         min_value = 1000000
@@ -45,7 +57,8 @@ class AHC:
         distance_matrix = np.zeros((len(self.clusters), len(self.clusters)))
         for i in range(len(self.clusters)):
             for j in range(len(self.clusters)):
-                distance_matrix[i][j] = self.compute_euc_distance(self.clusters[i], self.clusters[j])
+                # distance_matrix[i][j] = self.compute_euc_distance(self.clusters[i].centroid, self.clusters[j].centroid)
+                distance_matrix[i][j] = self.compute_simple_linkage_distance(self.clusters[i], self.clusters[j])
                 if i != j:
                     if distance_matrix[i][j] < min_value:
                         min_value = distance_matrix[i][j]
@@ -61,7 +74,7 @@ class AHC:
             second_cluster = self.clusters[clusters_2_merge[1]]
             first_cluster.merge_with(second_cluster)
             del self.clusters[clusters_2_merge[1]]
-
+            print("Number of clusters: ", len(self.clusters))
         print("Number of clusters: ", len(self.clusters))
 
     def draw_clusters(self, canvas):
@@ -90,27 +103,27 @@ class AHC:
 #           Point2D(600, 300),
 #           Point2D(700, 300)]
 
-bb1 = BoundingBox(10, 100, 10, 300)
-bb2 = BoundingBox(200, 300, 10, 100)
-bb3 = BoundingBox(220, 280, 200, 300)
-bounding_boxes = [bb1, bb2, bb3]
-
-window = Tk()
-num_points_per_bb = 30
-data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
-points = data_generator.generate_points()
-
-canvas = Canvas(window, width=800, height=600, bg='white')
-
-clusters = []
-for i in range(len(points)):
-    cluster = Cluster(i)
-    cluster.populate([points[i]])
-    cluster.compute_centroid()
-    clusters.append(cluster)
-
-ahc = AHC(clusters)
-ahc.run(200)
-ahc.draw_clusters(canvas)
-
-window.mainloop()
+# bb1 = BoundingBox(10, 100, 10, 300)
+# bb2 = BoundingBox(200, 300, 10, 100)
+# bb3 = BoundingBox(220, 280, 200, 300)
+# bounding_boxes = [bb1, bb2, bb3]
+#
+# window = Tk()
+# num_points_per_bb = 30
+# data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
+# points = data_generator.generate_points()
+#
+# canvas = Canvas(window, width=800, height=600, bg='white')
+#
+# clusters = []
+# for i in range(len(points)):
+#     cluster = Cluster(i)
+#     cluster.populate([points[i]])
+#     cluster.compute_centroid()
+#     clusters.append(cluster)
+#
+# ahc = AHC(clusters)
+# ahc.run(200)
+# ahc.draw_clusters(canvas)
+#
+# window.mainloop()
