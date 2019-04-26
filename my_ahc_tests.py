@@ -9,7 +9,7 @@ bb4 = BoundingBox(600, 700, 600, 700)
 bounding_boxes = [bb1, bb2, bb3, bb4]
 
 window = Tk()
-num_points_per_bb = 100
+num_points_per_bb = 10
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
 points = data_generator.generate_points()
 
@@ -19,7 +19,6 @@ clusters = []
 for i in range(len(points)):
     cluster = Cluster(i)
     cluster.populate([points[i]])
-    cluster.compute_centroid()
     clusters.append(cluster)
 
 ahc = AHC(points, clusters)

@@ -1,6 +1,5 @@
 import time
 import math
-from tkinter import Tk, Canvas
 import numpy as np
 from data_generator import Point2D
 
@@ -26,15 +25,13 @@ class Cluster:
         for i in range(len(cluster.points)):
             self.points.append(cluster.points[i])
 
-        # self.compute_centroid()
-
 class AHC:
     def __init__(self, points, clusters):
         self.points = points
         self.distance_btw_points_matrix = []
         self.clusters = clusters
 
-        self.colors = ['white', 'yellow', 'cyan', 'red', 'blue', 'brown', 'cyan']
+        self.colors = ['white', 'yellow', 'cyan', 'red', 'blue', 'brown', 'green']
 
     def compute_euc_distance(self, point_a, point_b):
         distance = math.sqrt(pow(point_a.x - point_b.x, 2)
