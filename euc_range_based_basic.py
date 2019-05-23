@@ -1,3 +1,4 @@
+import time
 import math
 from tkinter import *
 from data_generator import Point2D, BoundingBox, DataGenerator
@@ -67,7 +68,10 @@ canvas = Canvas(window, width=800, height=600, bg='white')
 search_range = 30
 euc_range_based = EucRangeBasedBasic(points, search_range, canvas)
 
+start_time = time.time()
 euc_range_based.run()
+end_time = time.time()
+print("Execution Time: %d", end_time-start_time)
 euc_range_based.draw_clusters()
 
 window.mainloop()
