@@ -71,7 +71,7 @@ euc_range_based = EucRangeBasedBasic(points, search_range, canvas)
 start_time = time.time()
 euc_range_based.run()
 end_time = time.time()
-print("Execution Time: %d", end_time-start_time)
+print("Execution Time: ", end_time-start_time)
 euc_range_based.draw_clusters()
 
 window.mainloop()
