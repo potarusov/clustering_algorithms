@@ -6,6 +6,7 @@ class Point2D:
         self.x = x
         self.y = y
         self.id = id
+        self.processed = False
 
 class BoundingBox:
     def __init__(self, x_min, x_max, y_min, y_max):
