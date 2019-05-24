@@ -1,5 +1,6 @@
 import random
 from tkinter import Tk, Canvas
+import csv
 
 class Point2D:
     def __init__(self, id, x, y):
@@ -39,6 +40,23 @@ class DataGenerator:
                 cluster.append(point_2d)
                 self.points.append(point_2d)
             self.clusters.append(cluster)
+        return self.points
+
+    def save_points_2_csv(self, csv_file_name):
+        with open(csv_file_name, 'w') as csv_file:
+            wr = csv.writer(csv_file, delimiter = ',', lineterminator='\n')
+            for point in self.points:
+                wr.writerow([point.x, point.y])
+
+    def load_points_from_csv(self, csv_file_name):
+        with open(csv_file_name, 'r') as f:
+            i = 0
+            for row in f:
+                row = row.split(',')
+                cols = [int(x) for x in row]
+                point = Point2D(i, cols[0], cols[1])
+                self.points.append(point)
+                i += 1
         return self.points
 
     def draw_clusters(self):

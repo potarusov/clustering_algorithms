@@ -14,7 +14,8 @@ bounding_boxes = [bb1, bb2, bb3, bb4]
 window = Tk()
 num_points_per_bb = 50
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
-points = data_generator.generate_points()
+points = data_generator.load_points_from_csv('points.csv')
+#points = data_generator.generate_points()
 
 canvas = Canvas(window, width=800, height=600, bg='white')
 colors = ['white', 'yellow', 'cyan', 'red', 'blue', 'brown', 'green']

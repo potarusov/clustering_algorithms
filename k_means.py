@@ -77,7 +77,8 @@ world = BoundingBox(10, 10, 220, 300)
 
 window = Tk()
 data_generator = DataGenerator(bounding_boxes, 30, window)
-points = data_generator.generate_points()
+#points = data_generator.generate_points()
+points = data_generator.load_points_from_csv('points.csv')
 #data_generator.draw_clusters()
 
 k_means = KMeans(5, world, window)
