@@ -7,7 +7,7 @@ class MeanShift:
         self.radius = radius
         self.clusters = []
         self.cluster_centroids = []
-        self.colors = ['green', 'blue', 'brown', 'green', 'blue', 'brown', 'cyan']
+        self.colors = ['yellow', 'blue', 'brown', 'green', 'blue', 'brown', 'cyan']
         self.canvas = canvas
 
     def compute_euc_distance(self, point, cluster_center):
@@ -106,11 +106,22 @@ bounding_boxes = [bb1, bb2, bb3, bb4]
 window = Tk()
 num_points_per_bb = 100
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
-points = data_generator.load_points_from_csv('points.csv')
+#points = data_generator.load_points_from_csv('points.csv')
 #points = data_generator.generate_points()
+p0 = Point2D(0, 300, 200)
+p1 = Point2D(1, 200, 300)
+p2 = Point2D(2, 400, 300)
+p3 = Point2D(3, 300, 400)
+p4 = Point2D(4, 300, 600)
+p5 = Point2D(5, 400, 600)
+p6 = Point2D(6, 400, 700)
+p7 = Point2D(7, 800, 700)
+p8 = Point2D(8, 700, 800)
+
+points = [p0, p1, p2, p3, p4, p5, p6, p7, p8]
 
 canvas = Canvas(window, width=1024, height=768, bg='white')
-search_radius = 100
+search_radius = 200
 mean_shift = MeanShift(search_radius, canvas)
 max_num_iterations = 10
 mean_shift.run(max_num_iterations, points)
