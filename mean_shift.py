@@ -109,7 +109,7 @@ data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
 points = data_generator.load_points_from_csv('points.csv')
 #points = data_generator.generate_points()
 
-canvas = Canvas(window, width=800, height=600, bg='white')
+canvas = Canvas(window, width=1024, height=768, bg='white')
 search_radius = 100
 mean_shift = MeanShift(search_radius, canvas)
 max_num_iterations = 10

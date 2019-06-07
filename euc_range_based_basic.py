@@ -18,7 +18,6 @@ class EucRangeBasedBasic:
         return distance
 
     def extend_cluster(self, center_point):
-        is_extended = False
         for point in self.points:
             if not point.processed:
                 distance = self.compute_euc_distance(center_point, point)
@@ -26,9 +25,6 @@ class EucRangeBasedBasic:
                     center_point.processed = True
                     self.neighboring_points.append(point)
                     self.extend_cluster(point)
-                    is_extended = True
-        if not is_extended:
-            return
 
     def draw_clusters(self):
         color = 0
@@ -66,8 +62,8 @@ data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
 #data_generator.save_points_2_csv('points.csv')
 points = data_generator.load_points_from_csv('points.csv')
 
-canvas = Canvas(window, width=800, height=600, bg='white')
-search_range = 30
+canvas = Canvas(window, width=1024, height=768, bg='white')
+search_range = 50
 euc_range_based = EucRangeBasedBasic(points, search_range, canvas)
 
 start_time = time.time()
