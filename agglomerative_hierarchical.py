@@ -13,13 +13,20 @@ class Cluster:
             self.points.append(points[i])
 
     def compute_centroid(self):
-        X = 0.0
-        Y = 0.0
-        for i in range(0, len(self.points)):
-            X += self.points[i].x
-            Y += self.points[i].y
-        centroid = Point2D(-1, X / len(self.points), Y / len(self.points))
-        return centroid
+        x_min = float('inf')
+        x_max = -float('inf')
+        y_min = float('inf')
+        y_max = -float('inf')
+        for point in self.points:
+            if x_min > point.x:
+                x_min = point.x
+            if x_max < point.x:
+                x_max = point.x
+            if y_min > point.y:
+                y_min = point.y
+            if y_max < point.y:
+                y_max = point.y
+        return Point2D(-1, (x_min + x_max) / 2.0, (y_min + y_max) / 2.0)
 
     def merge_with(self, cluster):
         for i in range(len(cluster.points)):

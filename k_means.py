@@ -26,16 +26,21 @@ class KMeans:
                     break
 
     def compute_cluster_center(self, cluster_index):
-        x = 0
-        y = 0
-        cluster_length = len(self.clusters[cluster_index])
+        x_min = float('inf')
+        x_max = -float('inf')
+        y_min = float('inf')
+        y_max = -float('inf')
         for point in self.clusters[cluster_index]:
-            x = x + point.x
-            y = y + point.y
-        x = x / cluster_length
-        y = y / cluster_length
-        self.cluster_centers[cluster_index].x = x
-        self.cluster_centers[cluster_index].y = y
+            if x_min > point.x:
+                x_min = point.x
+            if x_max < point.x:
+                x_max = point.x
+            if y_min > point.y:
+                y_min = point.y
+            if y_max < point.y:
+                y_max = point.y
+        self.cluster_centers[cluster_index].x = (x_min + x_max)/2.0
+        self.cluster_centers[cluster_index].y = (y_min + y_max) / 2.0
 
     def compute_euc_distance(self, point, cluster_center):
         distance = math.sqrt(pow(point.x - cluster_center.x, 2) + pow(point.y - cluster_center.y, 2))
@@ -77,11 +82,11 @@ world = BoundingBox(10, 10, 220, 300)
 
 window = Tk()
 data_generator = DataGenerator(bounding_boxes, 30, window)
-#points = data_generator.generate_points()
-points = data_generator.load_points_from_csv('points.csv')
+points = data_generator.generate_points()
+#points = data_generator.load_points_from_csv('points.csv')
 #data_generator.draw_clusters()
 
-k_means = KMeans(5, world, window)
+k_means = KMeans(3, world, window)
 k_means.run(points)
 k_means.draw_clusters()
 

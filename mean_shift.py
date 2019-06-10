@@ -7,7 +7,7 @@ class MeanShift:
         self.radius = radius
         self.clusters = []
         self.cluster_centroids = []
-        self.colors = ['yellow', 'blue', 'brown', 'green', 'blue', 'brown', 'cyan']
+        self.colors = ['yellow', 'blue', 'brown', 'green', 'pink', 'orange', 'cyan', 'black', 'white']
         self.canvas = canvas
 
     def compute_euc_distance(self, point, cluster_center):
@@ -15,12 +15,20 @@ class MeanShift:
         return distance
 
     def compute_cluster_centroid(self, points):
-        X = 0
-        Y = 0
+        x_min = float('inf')
+        x_max = -float('inf')
+        y_min = float('inf')
+        y_max = -float('inf')
         for point in points:
-            X += point.x
-            Y += point.y
-        return Point2D(-1, X / len(points), Y / len(points))
+            if x_min > point.x:
+                x_min = point.x
+            if x_max < point.x:
+                x_max = point.x
+            if y_min > point.y:
+                y_min = point.y
+            if y_max < point.y:
+                y_max = point.y
+        return Point2D(-1, (x_min + x_max)/2.0, (y_min + y_max) / 2.0)
 
     def find_neighbouring_points(self, x_centroid, points):
         neighbouring_points = []
@@ -68,11 +76,14 @@ class MeanShift:
             prev_cluster_centroids = list(cur_cluster_centroids)
 
         self.cluster_centroids = self.get_unique_centroids(cur_cluster_centroids)
-        self.construct_clusters(points)
+        self.construct_clusters(points, cur_cluster_centroids)
 
-    def construct_clusters(self, points):
+    def construct_clusters(self, points, cur_cluster_centroids):
         for centroid in self.cluster_centroids:
-            cluster = self.find_neighbouring_points(centroid, points)
+            cluster = []
+            for i, cur_centroid in enumerate(cur_cluster_centroids):
+                if centroid == cur_centroid:
+                    cluster.append(points[i])
             self.clusters.append(cluster)
 
     def draw_centroids(self, centroids):
@@ -107,26 +118,27 @@ window = Tk()
 num_points_per_bb = 100
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
 #points = data_generator.load_points_from_csv('points.csv')
-#points = data_generator.generate_points()
-p0 = Point2D(0, 300, 200)
-p1 = Point2D(1, 200, 300)
-p2 = Point2D(2, 400, 300)
-p3 = Point2D(3, 300, 400)
-p4 = Point2D(4, 300, 600)
-p5 = Point2D(5, 400, 600)
-p6 = Point2D(6, 400, 700)
-p7 = Point2D(7, 800, 700)
-p8 = Point2D(8, 700, 800)
+points = data_generator.generate_points()
+#p0 = Point2D(0, 300, 100)
+#p1 = Point2D(1, 400, 200)
+#p2 = Point2D(2, 200, 200)
+#p3 = Point2D(3, 300, 300)
+#p4 = Point2D(4, 300, 500)
+#p5 = Point2D(5, 200, 500)
+#p6 = Point2D(6, 200, 600)
+#p7 = Point2D(7, 600, 600)
+#p8 = Point2D(8, 700, 700)
 
-points = [p0, p1, p2, p3, p4, p5, p6, p7, p8]
+#points = [p0, p1, p2, p3, p4, p5, p6, p7, p8]
 
 canvas = Canvas(window, width=1024, height=768, bg='white')
-search_radius = 200
+search_radius = 100
 mean_shift = MeanShift(search_radius, canvas)
 max_num_iterations = 10
 mean_shift.run(max_num_iterations, points)
 
 mean_shift.draw_clusters()
 mean_shift.draw_centroids(mean_shift.cluster_centroids)
+mean_shift.print_centroids()
 
 window.mainloop()

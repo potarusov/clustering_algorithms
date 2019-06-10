@@ -58,9 +58,9 @@ bounding_boxes = [bb1, bb2, bb3, bb4]
 window = Tk()
 num_points_per_bb = 100
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
-#points = data_generator.generate_points()
+points = data_generator.generate_points()
 #data_generator.save_points_2_csv('points.csv')
-points = data_generator.load_points_from_csv('points.csv')
+#points = data_generator.load_points_from_csv('points.csv')
 
 canvas = Canvas(window, width=1024, height=768, bg='white')
 search_range = 50

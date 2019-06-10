@@ -9,6 +9,13 @@ class Point2D:
         self.id = id
         self.processed = False
 
+    def __eq__(self, other):
+        if not isinstance(other, Point2D):
+            # don't attempt to compare against unrelated types
+            return NotImplemented
+
+        return self.x == other.x and self.y == other.y and self.id == other.id and self.processed == other.processed
+
 class BoundingBox:
     def __init__(self, x_min, x_max, y_min, y_max):
         self.x_min = x_min
