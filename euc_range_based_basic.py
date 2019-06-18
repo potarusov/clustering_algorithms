@@ -49,18 +49,18 @@ class EucRangeBasedBasic:
                 cluster_id += 1
 
 # Test the algorithm
-bb1 = BoundingBox(100, 200, 100, 500)
-bb2 = BoundingBox(300, 400, 300, 400)
-bb3 = BoundingBox(600, 700, 100, 300)
-bb4 = BoundingBox(600, 700, 600, 700)
+bb1 = BoundingBox(100, 200, 100, 400)
+bb2 = BoundingBox(300, 400, 300, 300)
+bb3 = BoundingBox(600, 700, 100, 200)
+bb4 = BoundingBox(600, 700, 600, 600)
 bounding_boxes = [bb1, bb2, bb3, bb4]
 
 window = Tk()
 num_points_per_bb = 100
 data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
-points = data_generator.generate_points()
+#points = data_generator.generate_points()
 #data_generator.save_points_2_csv('points.csv')
-#points = data_generator.load_points_from_csv('points.csv')
+points = data_generator.load_points_from_csv('points.csv')
 
 canvas = Canvas(window, width=1024, height=768, bg='white')
 search_range = 50

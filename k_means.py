@@ -5,17 +5,15 @@ from tkinter import Tk, Canvas
 from data_generator import Point2D, BoundingBox, DataGenerator
 
 class KMeans:
-    def __init__(self, num_classes, world, gui):
+    def __init__(self, num_classes, canvas):
         self.num_classes = num_classes
-        self.world = world
         self.cluster_centers = []
         self.clusters = []
         for i in range(num_classes):
             self.clusters.append([])
 
         self.colors = ['red', 'yellow', 'blue', 'green', 'white']
-        self.gui = gui
-        self.canvas = Canvas(self.gui, width=800, height=600, bg='white')
+        self.canvas = canvas
 
     def initialize_cluster_center_points(self, points):
         for i in range(self.num_classes):
@@ -24,23 +22,6 @@ class KMeans:
                 if not points[point_index] in self.cluster_centers:
                     self.cluster_centers.append(points[point_index])
                     break
-
-    def compute_cluster_center(self, cluster_index):
-        x_min = float('inf')
-        x_max = -float('inf')
-        y_min = float('inf')
-        y_max = -float('inf')
-        for point in self.clusters[cluster_index]:
-            if x_min > point.x:
-                x_min = point.x
-            if x_max < point.x:
-                x_max = point.x
-            if y_min > point.y:
-                y_min = point.y
-            if y_max < point.y:
-                y_max = point.y
-        self.cluster_centers[cluster_index].x = (x_min + x_max)/2.0
-        self.cluster_centers[cluster_index].y = (y_min + y_max) / 2.0
 
     def compute_euc_distance(self, point, cluster_center):
         distance = math.sqrt(pow(point.x - cluster_center.x, 2) + pow(point.y - cluster_center.y, 2))
@@ -62,7 +43,6 @@ class KMeans:
         for point in points:
             cluster_index = self.classify_a_point(point)
             self.clusters[cluster_index].append(point)
-            self.compute_cluster_center(cluster_index)
 
     def draw_clusters(self):
         color = 0
@@ -73,20 +53,21 @@ class KMeans:
 
         self.canvas.pack()
 
-bb1 = BoundingBox(10, 100, 10, 100)
-bb2 = BoundingBox(200, 300, 10, 100)
-bb3 = BoundingBox(220, 280, 200, 300)
-bounding_boxes = [bb1, bb2, bb3]
-
-world = BoundingBox(10, 10, 220, 300)
+bb1 = BoundingBox(100, 200, 100, 500)
+bb2 = BoundingBox(300, 400, 300, 400)
+bb3 = BoundingBox(600, 700, 100, 300)
+bb4 = BoundingBox(600, 700, 500, 600)
+bounding_boxes = [bb1, bb2, bb3, bb4]
 
 window = Tk()
-data_generator = DataGenerator(bounding_boxes, 30, window)
-points = data_generator.generate_points()
-#points = data_generator.load_points_from_csv('points.csv')
-#data_generator.draw_clusters()
+num_points_per_bb = 100
+data_generator = DataGenerator(bounding_boxes, num_points_per_bb, window)
+#points = data_generator.generate_points()
+#data_generator.save_points_2_csv('points.csv')
+points = data_generator.load_points_from_csv('points.csv')
 
-k_means = KMeans(3, world, window)
+canvas = Canvas(window, width=1024, height=768, bg='white')
+k_means = KMeans(4, canvas)
 k_means.run(points)
 k_means.draw_clusters()
 
