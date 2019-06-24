@@ -33,9 +33,9 @@ class MeanShift:
     def find_neighbouring_points(self, x_centroid, points):
         neighbouring_points = []
         for point in points:
-                distance_between = self.compute_euc_distance(point, x_centroid)
-                if distance_between <= self.radius:
-                    neighbouring_points.append(point)
+            distance_between = self.compute_euc_distance(point, x_centroid)
+            if distance_between <= self.radius:
+                neighbouring_points.append(point)
         return neighbouring_points
 
     def get_unique_centroids(self, centroids):
@@ -68,10 +68,9 @@ class MeanShift:
             print(j)
             j = j + 1
             for i, point in enumerate(prev_cluster_centroids):
-                if not point.processed:
-                    neighbours = self.find_neighbouring_points(point, prev_cluster_centroids)
-                    cluster_centroid = self.compute_cluster_centroid(neighbours)
-                    cur_cluster_centroids[i] = cluster_centroid
+                neighbours = self.find_neighbouring_points(point, prev_cluster_centroids)
+                cluster_centroid = self.compute_cluster_centroid(neighbours)
+                cur_cluster_centroids[i] = cluster_centroid
 
             if self.is_equal(prev_cluster_centroids, cur_cluster_centroids):
                 break
