@@ -33,9 +33,9 @@ class MeanShift:
     def find_neighbouring_points(self, x_centroid, points):
         neighbouring_points = []
         for point in points:
-            distance_between = self.compute_euc_distance(point, x_centroid)
-            if distance_between <= self.radius:
-                neighbouring_points.append(point)
+                distance_between = self.compute_euc_distance(point, x_centroid)
+                if distance_between <= self.radius:
+                    neighbouring_points.append(point)
         return neighbouring_points
 
     def get_unique_centroids(self, centroids):
@@ -51,29 +51,33 @@ class MeanShift:
         return unique_centroids
 
     def is_equal(self, prev_centroids, cur_centroids):
+        if len(prev_centroids) != len(cur_centroids):
+            return False
         equal = True
-        for prev_centroid in prev_centroids:
-            for cur_centroid in cur_centroids:
-                if prev_centroid.x != cur_centroid.x or prev_centroid.y != cur_centroid.y:
-                    equal = False
-                    break
-            if not equal:
+        for i in range(0, len(prev_centroids)):
+            if prev_centroids[i].x != cur_centroids[i].x or prev_centroids[i].y != cur_centroids[i].y:
+                equal = False
                 break
         return equal
 
     def run(self, num_iterations, points):
         prev_cluster_centroids = list(points)
         cur_cluster_centroids = list(points)
-        for iteration in range(num_iterations):
+        j = 0
+        while True:
+            print(j)
+            j = j + 1
             for i, point in enumerate(prev_cluster_centroids):
-                neighbours = self.find_neighbouring_points(point, prev_cluster_centroids)
-                cluster_centroid = self.compute_cluster_centroid(neighbours)
-                cur_cluster_centroids[i] = cluster_centroid
+                if not point.processed:
+                    neighbours = self.find_neighbouring_points(point, prev_cluster_centroids)
+                    cluster_centroid = self.compute_cluster_centroid(neighbours)
+                    cur_cluster_centroids[i] = cluster_centroid
 
             if self.is_equal(prev_cluster_centroids, cur_cluster_centroids):
                 break
-
-            prev_cluster_centroids = list(cur_cluster_centroids)
+            else:
+                del prev_cluster_centroids[:]
+                prev_cluster_centroids = list(cur_cluster_centroids)
 
         self.cluster_centroids = self.get_unique_centroids(cur_cluster_centroids)
         self.construct_clusters(points, cur_cluster_centroids)
@@ -134,7 +138,7 @@ points = data_generator.load_points_from_csv('points.csv')
 canvas = Canvas(window, width=1024, height=768, bg='white')
 search_radius = 100
 mean_shift = MeanShift(search_radius, canvas)
-max_num_iterations = 10
+max_num_iterations = 5
 mean_shift.run(max_num_iterations, points)
 
 mean_shift.draw_clusters()
